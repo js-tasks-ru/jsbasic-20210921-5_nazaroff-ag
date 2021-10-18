@@ -6,8 +6,7 @@ export default class ProductCard {
     this.elem = this.render();
   }
 
-  addProduct(event, id) {
-    if (event.target.parentElement.className != "card__button") return;
+  addProduct(id) {
     let getID = new CustomEvent("product-add", {
       detail: id,
       bubbles: true,
@@ -33,9 +32,7 @@ export default class ProductCard {
       </div>
   `);
 
-    card.addEventListener("click", () =>
-      this.addProduct(event, this.product.id)
-    );
+    card.addEventListener("click", () => this.addProduct(this.product.id));
 
     return card;
   }

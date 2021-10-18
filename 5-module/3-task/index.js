@@ -3,30 +3,29 @@ function initCarousel() {
   const arrowLeft = document.querySelector(".carousel__arrow_left");
   const carouselInner = document.querySelector(".carousel__inner");
   let imgWidth = document.querySelector(".carousel__slide").offsetWidth;
-  const fixedImgSize = imgWidth;
-  imgWidth <= fixedImgSize
-    ? (arrowRight.style.display = "none")
-    : (arrowRight.style.display = "");
+
+  let currentSlideNumber = 0;
+
+  arrowLeft.style.display = "none";
 
   arrowRight.addEventListener("click", () => {
     arrowLeft.style.display = "";
-    imgWidth === fixedImgSize
-      ? (imgWidth = imgWidth + 2 * fixedImgSize)
-      : (imgWidth = imgWidth + fixedImgSize);
-
-    carouselInner.style.transform = `translateX(${imgWidth}px)`;
-    if (imgWidth === 0) {
+    currentSlideNumber -= 1;
+    carouselInner.style.transform = `translateX(${
+      imgWidth * currentSlideNumber
+    }px)`;
+    if (currentSlideNumber === -3) {
       arrowRight.style.display = "none";
     }
   });
 
   arrowLeft.addEventListener("click", () => {
     arrowRight.style.display = "";
-    imgWidth === fixedImgSize
-      ? (imgWidth = imgWidth - 2 * fixedImgSize)
-      : (imgWidth = imgWidth - fixedImgSize);
-    carouselInner.style.transform = `translateX(${imgWidth}px)`;
-    if (imgWidth === -fixedImgSize * 3) {
+    currentSlideNumber += 1;
+    carouselInner.style.transform = `translateX(${
+      imgWidth * currentSlideNumber
+    }px)`;
+    if (currentSlideNumber === 0) {
       arrowLeft.style.display = "none";
     }
   });
