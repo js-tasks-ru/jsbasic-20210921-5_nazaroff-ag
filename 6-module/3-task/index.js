@@ -15,7 +15,6 @@ export default class Carousel {
         <div class="carousel__arrow carousel__arrow_left">
           <img src="../../assets/images/icons/angle-left-icon.svg" alt="icon">
         </div>
-        
       </div>
     `);
 
@@ -55,37 +54,40 @@ export default class Carousel {
     const arrowLeft = document.querySelector(".carousel__arrow_left");
     const carouselInner = document.querySelector(".carousel__inner");
     let imgWidth = document.querySelector(".carousel__slide").offsetWidth;
-    const fixedImgSize = imgWidth;
-    imgWidth <= fixedImgSize
-      ? (arrowRight.style.display = "none")
-      : (arrowRight.style.display = "");
+    const slidesQuantity = document.querySelectorAll(".carousel__slide");
+
+    let currentSlideNumber = 0;
+
+    arrowLeft.style.display = "none";
 
     arrowRight.addEventListener("click", () => {
       arrowLeft.style.display = "";
-      imgWidth === fixedImgSize
-        ? (imgWidth = imgWidth + 2 * fixedImgSize)
-        : (imgWidth = imgWidth + fixedImgSize);
-
-      carouselInner.style.transform = `translateX(${imgWidth}px)`;
-      if (imgWidth === 0) {
+      currentSlideNumber -= 1;
+      carouselInner.style.transform = `translateX(${
+        imgWidth * currentSlideNumber
+      }px)`;
+      if (currentSlideNumber === -(slidesQuantity.length - 1)) {
         arrowRight.style.display = "none";
       }
     });
 
     arrowLeft.addEventListener("click", () => {
       arrowRight.style.display = "";
-      imgWidth === fixedImgSize
-        ? (imgWidth = imgWidth - 2 * fixedImgSize)
-        : (imgWidth = imgWidth - fixedImgSize);
-      carouselInner.style.transform = `translateX(${imgWidth}px)`;
-      if (imgWidth === -fixedImgSize * 3) {
+      currentSlideNumber += 1;
+      carouselInner.style.transform = `translateX(${
+        imgWidth * currentSlideNumber
+      }px)`;
+      if (currentSlideNumber === 0) {
         arrowLeft.style.display = "none";
       }
     });
 
     const slider = document.querySelector(".carousel__inner");
     slider.addEventListener("click", (event) => {
-      console.log(event.target.);
+      if (event.target.parentElement.className === "carousel__button") {
+        console.log("plus");
+        this.addProduct(event.path[3].dataset.id);
+      }
     });
   }
 
