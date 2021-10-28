@@ -17,6 +17,7 @@ export default class StepSlider {
     slider.appendChild(thumb);
     const progress = document.createElement("DIV");
     progress.classList.add("slider__progress");
+    progress.style.width = "0%";
     slider.appendChild(progress);
     const steps = this.sliderSteps();
     slider.appendChild(steps);
@@ -41,19 +42,6 @@ export default class StepSlider {
   initSlider(progress, slider, value, thumb) {
     document.addEventListener("DOMContentLoaded", () => {
       slider.addEventListener("click", (event) => {
-        // const x = event.offsetX;
-
-        // if (x <= 33) {
-        //   value.innerText = 0;
-        // } else if (x > 34 && x <= 120) {
-        //   value.innerText = 1;
-        // } else if (x > 121 && x <= 210) {
-        //   value.innerText = 2;
-        // } else if (x > 211 && x <= 280) {
-        //   value.innerText = 3;
-        // } else if (x > 281) {
-        //   value.innerText = 4;
-        // }
         let left = event.clientX - this.elem.getBoundingClientRect().left;
         let leftRelative = left / slider.offsetWidth;
         let segments = this.steps - 1;
@@ -72,7 +60,7 @@ export default class StepSlider {
 
         let valuePercents = (thumbValue / segments) * 100;
         thumb.style.left = `${valuePercents}%`;
-        progress.style.width = `${valuePercents}p%`;
+        progress.style.width = `${valuePercents}%`;
         this.sliderChange(thumbValue);
       });
     });
