@@ -8,7 +8,7 @@ export default class Modal {
 
   open() {
     document.body.classList.add("is-modal-open");
-    this.container.appendChild(this.elem);
+    document.body.append(this.elem);
     const closeButton = document.querySelector(".modal__close");
     closeButton.addEventListener("click", this.close);
     document.addEventListener("keydown", (event) => {
@@ -49,20 +49,27 @@ export default class Modal {
   }
 
   setTitle(title) {
-    document.querySelector(".modal__title").innerHTML = title;
+    this.elem.querySelector(".modal__title").innerHTML = title;
   }
 
   setBody(bodyData) {
-    const modalBody = document.querySelector(".modal__body");
+    const modalBody = this.elem.querySelector(".modal__body");
     modalBody.innerHTML = "";
     modalBody.appendChild(bodyData);
   }
 
-  close() {
-    const modal = document.querySelector(".modal");
+  // close() {
+  //   const modal = document.querySelector(".modal");
+  //   if (modal) {
+  //     document.body.classList.remove("is-modal-open");
+  //     modal.remove();
+  //   }
+  // }
+  close = () => {
+    const modal = this.elem;
     if (modal) {
       document.body.classList.remove("is-modal-open");
       modal.remove();
     }
-  }
+  };
 }
