@@ -8,6 +8,12 @@ export default class ProductGrid {
     this.render();
     this.filteredProducts = [];
     this.newFilters = {};
+    this.vegetarianOnlyControl = document.querySelector(
+      "[data-vegetarian-only]"
+    );
+    this.categoryControl = document.querySelector("[data-category]");
+    this.maxSpicinessControl = document.querySelector("[data-max-spiciness]");
+    this.noNutsControl = document.querySelector("[data-no-nuts]");
   }
   render() {
     this.elem = createElement(`
@@ -37,57 +43,47 @@ export default class ProductGrid {
   updateFilter(filters) {
     this.filters = filters;
     for (let f in filters) {
+      const value = filters[f];
       document.querySelector(".products-grid__inner").remove();
-      this.newFilters[f] = this.filters[f];
-      this.filterProducts(f);
+      f === "noNuts"
+        ? (f = "nuts")
+        : f === "vegeterianOnly"
+        ? (f = "vegeterian")
+        : f === "maxSpiciness"
+        ? (f = "spiciness")
+        : (f = "category");
+      this.newFilters[f] = value;
+      this.filterProducts();
       let innerElem = this.cartRender(this.filteredProducts);
       this.elem.appendChild(innerElem);
     }
   }
 
-  filterProducts(filter) {
-    if (filter === undefined) {
-      this.filteredProducts = this.products;
-      return this.filteredProducts;
-    } else if (filter === "noNuts") {
-      if (this.newFilters.noNuts) {
-        this.filteredProducts = this.filteredProducts.concat(
-          this.products.filter((p) => p.nuts || !p.hasOwnProperty("nuts"))
-        );
-      } else {
-        this.filteredProducts = this.products;
-      }
-      return this.filteredProducts;
-    } else if (filter === "vegeterianOnly") {
-      console.log(this.newFilters);
+  filterProducts() {
+    this.filteredProducts = [];
+    if (this.noNutsControl.checked) {
+      this.filteredProducts = this.filteredProducts.concat(
+        this.products.filter((p) => !p.nuts)
+      );
       console.log(this.filteredProducts);
-
-      if (this.newFilters.vegeterianOnly) {
-        this.filteredProducts = this.filteredProducts.concat(
-          this.products.filter((p) => p.vegeterian)
-        );
-      } else {
-        this.filteredProducts = this.products;
-      }
-      return this.filteredProducts;
-    } else if (filter === "maxSpiciness") {
-      if (this.newFilters.maxSpiciness === 2) {
-        this.filteredProducts = this.filteredProducts.concat(
-          this.products.filter((p) => p.spiciness <= this.filters.maxSpiciness)
-        );
-      } else {
-        this.filteredProducts = this.products;
-      }
-      return this.filteredProducts;
-    } else if (filter === "category") {
-      if (this.newFilters.category === "soups") {
-        this.filteredProducts = this.filteredProducts.concat(
-          this.products.filter(
-            (p) => p.category === this.filters.category || p.category === ""
-          )
-        );
-      }
-      return this.filteredProducts;
+    } else if (this.vegetarianOnlyControl.checked) {
+      this.filteredProducts = this.filteredProducts.concat(
+        this.products.filter((p) => p.vegeterian)
+      );
+      console.log(this.filteredProducts);
+    } else if (this.maxSpicinessControl.checked) {
+      this.filteredProducts = this.filteredProducts.concat(
+        this.products.filter((p) => p.spiciness <= this.newFilters.spiciness)
+      );
+      console.log(this.filteredProducts);
+    } else if (this.categoryControl.checked) {
+      this.filteredProducts = this.filteredProducts.concat(
+        this.products.filter((p) => p.category === this.newFilters.category)
+      );
+      console.log(this.filteredProducts);
+    } else {
+      this.filteredProducts = this.products;
+      console.log(this.filteredProducts);
     }
   }
 }
