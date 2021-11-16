@@ -6,53 +6,50 @@ export default class Cart {
   }
 
   addProduct(product) {
-    if (product === null || product === "") return;
-    if (!this.cartItems.length) {
-      this.cartItems.push({ product: product, count: 1 });
+    if (product === null || product === "" || product === undefined) return;
+    let cartItem = this.cartItems.find((item) => item.product.id == product.id);
+    if (!cartItem) {
+      cartItem = {
+        product,
+        count: 1,
+      };
+      this.cartItems.push(cartItem);
     } else {
-      let sum = 0;
-      for (let p of this.cartItems) {
-        p.product.name == product.name ? (p.count += 1) : (sum += 1);
-      }
-      sum > this.cartItems.length - 1
-        ? this.cartItems.push({ product: product, count: 1 })
-        : "";
+      cartItem.count++;
     }
-    console.log(this.cartItems);
-    this.onProductUpdate(this.cartItems);
+
+    this.onProductUpdate(cartItem);
   }
 
   updateProductCount(productId, amount) {
-    for (let p of this.cartItems) {
-      p.product.id == productId ? (p.count += amount) : "";
-      p.count <= 0 ? this.cartItems.splice(this.cartItems.indexOf(p), 1) : "";
+    let cartItem = this.cartItems.find((item) => item.product.id == productId);
+    cartItem.count += amount;
+
+    if (cartItem.count === 0) {
+      this.cartItems.splice(this.cartItems.indexOf(cartItem), 1);
     }
-    this.onProductUpdate(this.cartItems);
+
+    this.onProductUpdate(cartItem);
   }
 
-  isEmpty() {
-    return !!this.cartItems.length;
-  }
-
-  getTotalCount() {
-    let sum = 0;
-    for (let p of this.cartItems) {
-      sum += p.count;
-    }
-    return sum;
-  }
-
-  getTotalPrice() {
-    let sum = 0;
-    for (let p of this.cartItems) {
-      sum += p.product.price * p.count;
-    }
-    return sum;
-  }
-
-  onProductUpdate(cartItem) {
+  onProductUpdate() {
     // реализуем в следующей задаче
 
     this.cartIcon.update(this);
+  }
+
+  isEmpty() {
+    return this.cartItems.length === 0;
+  }
+
+  getTotalCount() {
+    return this.cartItems.reduce((sum, item) => sum + item.count, 0);
+  }
+
+  getTotalPrice() {
+    return this.cartItems.reduce(
+      (sum, item) => sum + item.product.price * item.count,
+      0
+    );
   }
 }
