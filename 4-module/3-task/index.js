@@ -1,32 +1,4 @@
 function highlight(table) {
-  // for (let i = 1; i < table.rows.length; i++) {
-  //   console.log(table.rows[i].cells.length);
-  //   for (let y = 0; y < table.rows[i].cells.length; y++) {
-  //     if (y === 1) {
-  //       if (+table.rows[i].cells[y].innerText < 18) {
-  //         table.rows[i].cells[y].style.textDecoration = "line-through";
-  //       }
-  //     }
-  //     if (y === 2)
-  //       if (table.rows[i].cells[y].innerText === "m") {
-  //         table.rows[i].cells[y].className = "male";
-  //       }
-  //     if (table.rows[i].cells[y].innerText === "f") {
-  //       table.rows[i].cells[y].className = "female";
-  //     }
-
-  //     if (y === 3) {
-  //       if (table.rows[i].cells[y].dataset.available) {
-  //         table.rows[i].cells[y].className = "available";
-  //       } else {
-  //         table.rows[i].cells[y].className = "unavailable";
-  //       }
-  //       if (!table.rows[i].cells[y].hasAttribute(`data-available`)) {
-  //         table.rows[i].cells[y].setAttribute("hidden", "");
-  //       }
-  //     }
-  //   }
-  // }
 
   let tBodyRows = table.tBodies[0].rows;
 

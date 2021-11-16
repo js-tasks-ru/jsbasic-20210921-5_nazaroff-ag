@@ -38,57 +38,43 @@ export default class CartIcon {
     }
   }
 
-  updatePosition() {
-    if (!this.elem.offsetHeight) {
-      return;
-    } // not visible
-
-    if (!this.initialTopCoord) {
-      this.initialTopCoord =
-        this.elem.getBoundingClientRect().top + window.pageYOffset;
-    }
-
-    if (document.documentElement.clientWidth <= 767) {
-      // mobile: cart is always fixed
-      this.resetPosition();
-      return;
-    }
-
-    let isHeaderCartScrolled = window.pageYOffset > this.initialTopCoord;
-
-    if (isHeaderCartScrolled) {
-      this.fixPosition();
-    } else {
-      this.resetPosition();
-    }
-  }
-
-  fixPosition() {
-    Object.assign(this.elem.style, {
-      position: "fixed",
-      top: "50px",
-      zIndex: 1e3,
-      left:
-        Math.min(
-          // справа от содержимого (определяем по первому контейнеру в нашей вёрстке)
-          document.querySelector(".container").getBoundingClientRect().right +
-            20,
-          document.documentElement.clientWidth - this.elem.offsetWidth - 10
-        ) + "px",
-    });
-  }
-
-  resetPosition() {
-    Object.assign(this.elem.style, {
-      position: "",
-      top: "",
-      left: "",
-      zIndex: "",
-    });
-  }
-
   addEventListeners() {
     document.addEventListener("scroll", () => this.updatePosition());
     window.addEventListener("resize", () => this.updatePosition());
+  }
+
+  updatePosition() {
+    if (!this.elem.offsetWidth) {
+      return;
+    }
+    let initialTopCoord =
+      this.elem.getBoundingClientRect().top + window.pageYOffset;
+    let isMobile = document.documentElement.clientWidth <= 767;
+
+    if (window.pageYOffset > initialTopCoord && !isMobile) {
+      // плавающая корзина
+      let leftIndent =
+        Math.min(
+          document.querySelector(".container").getBoundingClientRect().right +
+            20,
+          document.documentElement.clientWidth - this.elem.offsetWidth - 10
+        ) + "px";
+
+      Object.assign(this.elem.style, {
+        position: "fixed",
+        top: "50px",
+        zIndex: 1e3,
+        right: "10px",
+        left: leftIndent,
+      });
+    } else {
+      // корзина сверху
+      Object.assign(this.elem.style, {
+        position: "",
+        top: "",
+        left: "",
+        zIndex: "",
+      });
+    }
   }
 }
